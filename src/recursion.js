@@ -10,10 +10,10 @@ var factorial = function(n) {
   if (n < 0) {
     return null;
   }
+
   if (n === 0) {
     return 1;
-  }
-  if (n > 0) {
+  } else {
     return n * (factorial(n-1));
   }
 };
@@ -93,7 +93,9 @@ var range = function(x, y) {
 
   if (distance < 2) {
     return [];
-  } else if (distance === 2) {
+  }
+
+  if (distance === 2) {
     return [x-step];
   } else {
     var subRange = range(x, (y+step));
@@ -108,6 +110,27 @@ var range = function(x, y) {
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
+  var result;
+  //Base Case
+  if (exp === 0) {
+    return result = 1;
+  }
+  if (exp === 1) {
+    return result = base;
+  }
+  //Recursive Cases
+  var expIsPositive = (exp >=0) ? 'true' : false;
+  /// If exp is positive and even
+  if (expIsPositive && isEven(exp)) {
+    return base**(exp/2) * exponent(base, (exp/2));
+  /// If exp is positive and odd
+  } else if (expIsPositive && !isEven(exp)) {
+    return base * exponent(base, (exp-1));
+  /// If exp is negative compute as positive then multiply by reciprocal
+  } else if (!expIsPositive) {
+    return (1 / exponent(base, (exp*-1)));
+  }
+  return result
 };
 
 // 8. Determine if a number is a power of two.
@@ -115,14 +138,55 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
+  var isPowerOfTwo;
+  //Base Case(s)
+  if (n === 1) {
+    isPowerOfTwo = true;
+  }
+  if (n < 1) {
+    isPowerOfTwo = false;
+  }
+  // Recursive Case(s)
+  if (n > 1) {
+    return powerOfTwo(n/2);
+  }
+  return isPowerOfTwo;
 };
 
 // 9. Write a function that reverses a string.
 var reverse = function(string) {
+  var reversedChars = [];
+  var chars = string.split('');
+  //Base Case
+  if (string.length === 1) {
+    //reversedChars.push(chars[chars.length-1]);
+    return string;
+  //Recursive Case
+  } else if (string.length > 1) {
+    var lastLetter = chars[chars.length-1];
+    reversedChars.push(lastLetter);
+    chars.pop();
+    return reversedChars.concat(reverse(chars.join(''))).join('');
+  }
+return reversedChars.join('');
 };
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
+  //Base Case(s)
+  if (string <= 1) {
+    return true;
+  }
+  //Recursive Case(s)
+  string = string.toLowerCase();
+  var firstChar = string[0];
+  var lastChar = string[string.length-1];
+  var newString = string.slice(firstChar+1, lastChar);
+  if (firstChar === lastChar) {
+    return palindrome(newString);
+  } else {
+    return false;
+  }
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
